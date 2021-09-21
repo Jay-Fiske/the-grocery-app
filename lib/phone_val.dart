@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'otp.dart';
-
 class PhoneVal extends StatefulWidget {
   final TextEditingController phone;
 

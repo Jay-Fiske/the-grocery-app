@@ -1,6 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'dashBoard.dart';
+import 'profile.dart';
 enum BestTutorSite { small, medium, large,xLarge}
 BestTutorSite _site = BestTutorSite.small;
 List<bool> icons = [true, false, false, false];
@@ -315,9 +318,16 @@ class _BottomState extends State<Bottom> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  reset();
-                  icons[0] = true;
-                  setState(() {});
+                  if(icons[0]!=true) {
+                    reset();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashBoard(),
+                        ));
+                    icons[0] = true;
+                    setState(() {});
+                  }
                 },
                 child: Image.asset(
                     icons[0]
@@ -356,6 +366,11 @@ class _BottomState extends State<Bottom> {
               GestureDetector(
                 onTap: () {
                   reset();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ));
                   icons[3] = true;
                   setState(() {});
                 },
@@ -513,4 +528,22 @@ class _RadioListState extends State<RadioList> {
       ],
     );
   }
+}
+Padding rowElement(double height,double width,String img,String name){
+  return Padding(
+    padding: EdgeInsets.all(10.0),
+    child: Row(
+        children:[
+          Image.asset(img,width:width*0.05),
+          SizedBox(width:width*0.01),
+          Text(name,style:(TextStyle(fontSize:20,color:Colors.grey.shade700)))
+        ]
+    ),
+  );
+}
+Container customDivider2(double height,double width){
+  return  Container(
+      height: height * 0.00125,
+      width: width,
+      color: Colors.grey);
 }
