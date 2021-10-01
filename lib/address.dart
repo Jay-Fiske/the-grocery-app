@@ -21,9 +21,9 @@ class _AddressScreenState extends State<AddressScreen> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return Scaffold(extendBody: true,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.0525),
+        preferredSize: Size.fromHeight(height * 0.1),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -33,9 +33,9 @@ class _AddressScreenState extends State<AddressScreen> {
                 borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(width * 0.075),
                     bottomLeft: Radius.circular(width * 0.075)),
-                child: Container(color: Colors.green, height: height * 0.1)),
+                child: Container(color: Colors.green, height: height * 0.12)),
             Positioned(
-              top: height * 0.04,
+              top: height * 0.05,
               left: width * 0.2,
               right: width * 0.2,
               child: Container(
@@ -62,7 +62,7 @@ class _AddressScreenState extends State<AddressScreen> {
             children: [
               AutoSizeText(
                 'Personal Details',
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: width*0.0625),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 Container(
@@ -88,10 +88,10 @@ class _AddressScreenState extends State<AddressScreen> {
                 ),
               ]),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: width * 0.05),
+                padding: EdgeInsets.only(top: width * 0.075),
                 child: AutoSizeText(
                   'Address Details',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: width*0.0625),
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -176,7 +176,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           border: Border.all(color: Colors.grey)),
                       child: Text('Home',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: width*0.05,
                               color: _click[0] ? Colors.white : Colors.black)),
                       alignment: Alignment.center),
                 ),
@@ -194,7 +194,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           border: Border.all(color: Colors.grey)),
                       child: Text('Work',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: width*0.05,
                               color: _click[1] ? Colors.white : Colors.black)),
                       alignment: Alignment.center),
                 ),
@@ -212,7 +212,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           border: Border.all(color: Colors.grey)),
                       child: Text('Others',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: width*0.05,
                               color: _click[2] ? Colors.white : Colors.black)),
                       alignment: Alignment.center),
                 ),
@@ -221,14 +221,15 @@ class _AddressScreenState extends State<AddressScreen> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: Text('ADD', style: TextStyle(fontSize: width * 0.15)),
+                  child: Text('ADD', style: TextStyle(fontSize: width * 0.075)),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(width * 0.1))),
                     backgroundColor: MaterialStateProperty.all(Colors.green),
                     padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        horizontal: width * 0.25, vertical: width * 0.01),),),
-                ),)
+                        horizontal: width * 0.25, vertical: width * 0.015),),),
+                ),),
+              SizedBox(height: height*0.125,)
             ],
           ),
         ),

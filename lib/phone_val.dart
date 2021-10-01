@@ -74,9 +74,6 @@ class _PhoneValState extends State<PhoneVal> {
                             prefix: Text('+91  '),
                             counterText: '',
                           ),
-                          validator: (value){
-
-                          },
                         ),
                       ),
                       Center(

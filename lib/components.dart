@@ -1,52 +1,142 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_app/product.dart';
 
+import 'category.dart';
 import 'dashBoard.dart';
 import 'profile.dart';
-enum BestTutorSite { small, medium, large,xLarge}
+
+enum BestTutorSite { small, medium, large, xLarge }
 BestTutorSite _site = BestTutorSite.small;
 List<bool> icons = [true, false, false, false];
-List<String> variation = ['2 pieces(Approx. 540 gm)','4 pieces(Approx. 1 kg)','6 pieces(Approx. 1.5 kg)','8 pieces(Approx. 2 kg)'];
+List<String> variation = [
+  '2 pieces(Approx. 540 gm)',
+  '4 pieces(Approx. 1 kg)',
+  '6 pieces(Approx. 1.5 kg)',
+  '8 pieces(Approx. 2 kg)'
+];
 
 void reset() {
   for (int i = 0; i < 4; i++) {
     icons[i] = false;
   }
 }
-class SaleProduct extends StatefulWidget {
-   final String op,dp,img,name;
 
-   const SaleProduct( {Key key,@required this.op,@required this.dp,@required this.img,@required this.name,}) : super(key: key);
+class SearchCategories extends StatefulWidget {
+  final String image, title;
+
+  const SearchCategories({Key key, @required this.image, @required this.title})
+      : super(key: key);
+
+  @override
+  _SearchCategoriesState createState() => _SearchCategoriesState();
+}
+
+class _SearchCategoriesState extends State<SearchCategories> {
+  double width, height;
+
+  @override
+  Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: width * 0.03, vertical: height * 0.001),
+      height: height * 0.03,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(width * 0.01)),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        Image.asset(widget.image, width: width * 0.05),
+        AutoSizeText(widget.title),
+      ]),
+    );
+  }
+}
+
+class SearchProduct extends StatefulWidget {
+  final String name;
+  final TextEditingController textField;
+
+  const SearchProduct({Key key,@required this.name,this.textField}) : super(key: key);
+  @override
+  _SearchProductState createState() => _SearchProductState();
+}
+
+class _SearchProductState extends State<SearchProduct> {
+  double width, height;
+  @override
+  Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    return Container(
+      width: width,
+      height: height * 0.05,
+      padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CategoryScreen()),
+              );
+            },
+            child: Text(widget.name)),
+        GestureDetector(onTap:(){
+          if(widget.textField!=null) {
+            widget.textField.text = widget.name;
+            widget.textField.selection = TextSelection.fromPosition(TextPosition(offset: widget.textField.text.length));
+            setState(() {});
+          }
+        },child: Image.asset("assets/images/akar-icons_arrow-down-left.png",width:width*0.05))
+      ]),
+    );
+  }
+}
+
+class SaleProduct extends StatefulWidget {
+  final String op, dp, img, name;
+
+  const SaleProduct({
+    Key key,
+    @required this.op,
+    @required this.dp,
+    @required this.img,
+    @required this.name,
+  }) : super(key: key);
   @override
   _SaleProductState createState() => _SaleProductState();
 }
 
 class _SaleProductState extends State<SaleProduct> {
-  double height,width;
-
+  double height, width;
+  String data = '4 pieces(Approx. 1 kg)';
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
-    return new Material(
+    return Material(
       color: Colors.white,
       elevation: 10,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        height: width * 0.5,
+        height: height * 0.275,
         width: width * 0.35,
-        child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Container(
-            width: width * 0.25,
-            height: width * 0.15,
+            margin: EdgeInsets.only(top: height * 0.02),
+            height: width * 0.2,
             child: Image.asset(
               widget.img,
               fit: BoxFit.cover,
             ),
           ),
           Container(
+            margin: EdgeInsets.only(top: height * 0.05),
             padding: EdgeInsets.symmetric(horizontal: width * 0.02),
             child: Row(
               children: [
@@ -66,53 +156,138 @@ class _SaleProductState extends State<SaleProduct> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap:(){ showDialog(
-              context: context,
-              builder: (BuildContext context) => DialogBox(),
-            );
-            },
-            child: new Container(
-              padding: EdgeInsets.all(3),
-              height: height * 0.03,
-              width: width * 0.32,
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.grey),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Row(
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.02, vertical: height * 0.01),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width:width*0.25,
-                    child: AutoSizeText(
-                      variation[1],
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.grey),
+                  Column(children: [
+                    AutoSizeText(
+                      '\u{20B9}' + widget.dp,
+                      style: TextStyle(fontSize: 18),
                     ),
+                    AutoSizeText(
+                      '\u{20B9}' + widget.op,
+                      style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          fontSize: 15,
+                          color: Colors.grey),
+                    ),
+                  ]),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductScreen()));
+                    },
+                    child: Image.asset('assets/images/Group 6814.png',
+                        width: width * 0.08, height: width * 0.08),
+                  )
+                ]),
+          )
+        ]),
+      ),
+    );
+  }
+}
+
+class CategoryProduct extends StatefulWidget {
+  final String op, dp, img, name;
+
+  const CategoryProduct({
+    Key key,
+    @required this.op,
+    @required this.dp,
+    @required this.img,
+    @required this.name,
+  }) : super(key: key);
+  @override
+  _CategoryProductState createState() => _CategoryProductState();
+}
+
+class _CategoryProductState extends State<CategoryProduct> {
+  double height, width;
+  String data = '4 pieces(Approx. 1 kg)';
+  @override
+  Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+
+    return Material(
+      color: Colors.white,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(width: 0.35)),
+      child: Container(
+        height: height * 0.3,
+        width: width * 0.45,
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.04, vertical: height * 0.01),
+            height: height * 0.175,
+            child: Image.asset(
+              widget.img,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.02),
+            child: Row(
+              children: [
+                Container(
+                  width: width * 0.3,
+                  child: AutoSizeText(
+                    widget.name,
+                    style: TextStyle(fontSize: width * 0.05),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Image.asset('assets/images/Vecto.png',width:width*0.03,height:height*0.03)
-                ],
-              ),),
+                ),
+              ],
+            ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6),
-            child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Column(children: [
-                AutoSizeText(
-                  '\u{20B9}'+widget.op,
-                  style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      fontSize: 15,
-                      color: Colors.grey),
-                ),
-                AutoSizeText(
-                  '\u{20B9}'+widget.dp,
-                  style: TextStyle(fontSize: 18),
-                )
-              ]),
-              Image.asset('assets/images/Group 6814.png',
-                  width: width * 0.08, height: width * 0.08)
-            ]),
+            padding:
+                EdgeInsets.symmetric(horizontal: width * 0.02, vertical: 6),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: width * 0.175,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AutoSizeText(
+                            '\u{20B9}' + widget.dp,
+                            maxLines: 1,
+                            style: TextStyle(fontSize: width * 0.0625),
+                          ),
+                          AutoSizeText(
+                            '\u{20B9}' + widget.op,
+                            style: TextStyle(
+                                decoration: TextDecoration.lineThrough,
+                                fontSize: width * 0.035,
+                                color: Colors.grey),
+                          ),
+                        ]),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductScreen()));
+                    },
+                    child: Image.asset(
+                      'assets/images/Group 6814.png',
+                      width: width * 0.1,
+                    ),
+                  )
+                ]),
           )
         ]),
       ),
@@ -121,19 +296,21 @@ class _SaleProductState extends State<SaleProduct> {
 }
 
 class CategoryAppBar extends StatefulWidget {
- final String backgroundImage,productImage,name;
+  final String backgroundImage, productImage, name;
 
-  const CategoryAppBar( {Key key, this.backgroundImage, this.productImage, this.name}) : super(key: key);
+  const CategoryAppBar(
+      {Key key, this.backgroundImage, this.productImage, this.name})
+      : super(key: key);
   @override
   _CategoryAppBarState createState() => _CategoryAppBarState();
 }
 
 class _CategoryAppBarState extends State<CategoryAppBar> {
-  double height,width;
+  double height, width;
   @override
   Widget build(BuildContext context) {
-     height = MediaQuery.of(context).size.height;
-     width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return PreferredSize(
       preferredSize: Size.fromHeight(height * 0.225),
       child: AppBar(
@@ -184,7 +361,7 @@ class _CategoryAppBarState extends State<CategoryAppBar> {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.shade500,
-                    offset:  Offset(
+                    offset: Offset(
                       2.0,
                       2.0,
                     ),
@@ -193,7 +370,7 @@ class _CategoryAppBarState extends State<CategoryAppBar> {
                   ), //BoxShadow
                   BoxShadow(
                     color: Colors.white,
-                    offset:  Offset(0.0, 0.0),
+                    offset: Offset(0.0, 0.0),
                     blurRadius: 0.0,
                     spreadRadius: 0.0,
                   ), //BoxShadow
@@ -201,7 +378,8 @@ class _CategoryAppBarState extends State<CategoryAppBar> {
               ),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(25),
-                  child: Image.asset(widget.backgroundImage, fit: BoxFit.cover)),
+                  child:
+                      Image.asset(widget.backgroundImage, fit: BoxFit.cover)),
             ),
           )
         ]),
@@ -209,8 +387,6 @@ class _CategoryAppBarState extends State<CategoryAppBar> {
     );
   }
 }
-
-
 
 PreferredSize customAppBar(
     double height, double width, String img1, String img2, String name) {
@@ -264,7 +440,7 @@ PreferredSize customAppBar(
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.shade500,
-                  offset:  Offset(
+                  offset: Offset(
                     2.0,
                     2.0,
                   ),
@@ -273,7 +449,7 @@ PreferredSize customAppBar(
                 ), //BoxShadow
                 BoxShadow(
                   color: Colors.white,
-                  offset:  Offset(0.0, 0.0),
+                  offset: Offset(0.0, 0.0),
                   blurRadius: 0.0,
                   spreadRadius: 0.0,
                 ), //BoxShadow
@@ -290,13 +466,12 @@ PreferredSize customAppBar(
 }
 
 class Bottom extends StatefulWidget {
-
   @override
   _BottomState createState() => _BottomState();
 }
 
 class _BottomState extends State<Bottom> {
-  double height,width;
+  double height, width;
 
   @override
   Widget build(BuildContext context) {
@@ -312,20 +487,21 @@ class _BottomState extends State<Bottom> {
                 topRight: Radius.circular(width * 0.075))),
         height: height * 0.075,
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 20.0),
+          padding: EdgeInsets.symmetric(horizontal: width*0.075,vertical: height*0.0175),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  if(icons[0]!=true) {
+                  if(icons[0]==false) {
                     reset();
+                    icons[0] = true;
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => DashBoard(),
                         ));
-                    icons[0] = true;
                     setState(() {});
                   }
                 },
@@ -365,14 +541,17 @@ class _BottomState extends State<Bottom> {
               ),
               GestureDetector(
                 onTap: () {
-                  reset();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileScreen(),
-                      ));
-                  icons[3] = true;
-                  setState(() {});
+                  if(icons[3]==false)
+                  {
+                    reset();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileScreen(),
+                        ));
+                    icons[3] = true;
+                    setState(() {});
+                  }
                 },
                 child: Image.asset(
                     icons[3]
@@ -392,8 +571,8 @@ class _BottomState extends State<Bottom> {
 FloatingActionButton fAB(double width) {
   return FloatingActionButton(
     onPressed: () {},
-    child: Icon(Icons.mic, size: width * 0.1),
-    shape: CircleBorder(side: BorderSide(color: Colors.white, width: 3.0)),
+    child: Icon(Icons.mic, size: width * 0.09),
+    shape: CircleBorder(side: BorderSide(color: Colors.white, width: 2.0)),
   );
 }
 
@@ -435,8 +614,8 @@ Padding categoryName(double width, String title) {
     )),
   );
 }
-class DialogBox extends StatefulWidget {
 
+class DialogBox extends StatefulWidget {
   @override
   _DialogBoxState createState() => _DialogBoxState();
 }
@@ -445,16 +624,23 @@ class _DialogBoxState extends State<DialogBox> {
   @override
   Widget build(BuildContext context) {
     return new AlertDialog(
-      title:  Text('Quantity',style:TextStyle(fontSize:24)),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),side:BorderSide(color: Colors.green,width:2)),
-      content: RadioList(),actionsAlignment: MainAxisAlignment.center,
+      title: Text('Quantity', style: TextStyle(fontSize: 24)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(color: Colors.green, width: 2)),
+      content: RadioList(),
+      actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
         // ignore: deprecated_member_use
-        FlatButton(color: Colors.green,shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15)),
+        FlatButton(
+          color: Colors.green,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           onPressed: () {
-            Navigator.of(context).pop();
-            },
-          child:  Text('Confirm',style:TextStyle(fontSize: 20,color:Colors.white)),
+            Navigator.pop(context, variation[_site.index]);
+          },
+          child: Text('Confirm',
+              style: TextStyle(fontSize: 20, color: Colors.white)),
         ),
       ],
     );
@@ -462,88 +648,285 @@ class _DialogBoxState extends State<DialogBox> {
 }
 
 class RadioList extends StatefulWidget {
-
   @override
   _RadioListState createState() => _RadioListState();
 }
 
 class _RadioListState extends State<RadioList> {
-
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ListTile(
-          title:  AutoSizeText(variation[0],maxLines: 1,overflow:TextOverflow.ellipsis),
-          leading: Radio(
-            value: BestTutorSite.small,
-            groupValue: _site,
-            onChanged: (BestTutorSite value) {
-              setState(() {
-                _site = value;
-              });
-            },
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            title: AutoSizeText(variation[0],
+                maxLines: 1, overflow: TextOverflow.ellipsis),
+            leading: Radio(
+              value: BestTutorSite.small,
+              groupValue: _site,
+              onChanged: (BestTutorSite value) {
+                setState(() {
+                  _site = value;
+                });
+              },
+            ),
           ),
-        ),
-        ListTile(
-          title:  AutoSizeText(variation[1],maxLines: 1,),
-          leading: Radio(
-            value: BestTutorSite.medium,
-            groupValue: _site,
-            onChanged: (BestTutorSite value) {
-              setState(() {
-                _site = value;
-              });
-            },
+          ListTile(
+            title: AutoSizeText(
+              variation[1],
+              maxLines: 1,
+            ),
+            leading: Radio(
+              value: BestTutorSite.medium,
+              groupValue: _site,
+              onChanged: (BestTutorSite value) {
+                setState(() {
+                  _site = value;
+                });
+              },
+            ),
           ),
-        ),
-        ListTile(
-          title:  AutoSizeText(variation[2],maxLines: 1,),
-          leading: Radio(
-            value: BestTutorSite.large,
-            groupValue: _site,
-            onChanged: (BestTutorSite value) {
-              setState(() {
-                _site = value;
-              });
-            },
+          ListTile(
+            title: AutoSizeText(
+              variation[2],
+              maxLines: 1,
+            ),
+            leading: Radio(
+              value: BestTutorSite.large,
+              groupValue: _site,
+              onChanged: (BestTutorSite value) {
+                setState(() {
+                  _site = value;
+                });
+              },
+            ),
           ),
-        ),
-        ListTile(
-          title:  AutoSizeText(variation[3],maxLines: 1,),
-          leading: Radio(
-            value: BestTutorSite.xLarge,
-            groupValue: _site,
-            onChanged: (BestTutorSite value) {
-              setState(() {
-                _site = value;
-              });
-            },
+          ListTile(
+            title: AutoSizeText(
+              variation[3],
+              maxLines: 1,
+            ),
+            leading: Radio(
+              value: BestTutorSite.xLarge,
+              groupValue: _site,
+              onChanged: (BestTutorSite value) {
+                setState(() {
+                  _site = value;
+                });
+              },
+            ),
           ),
-        ),
-
-
-      ],
+        ],
+      ),
     );
   }
 }
-Padding rowElement(double height,double width,String img,String name){
+
+Padding rowElement(double height, double width, String img, String name) {
   return Padding(
     padding: EdgeInsets.all(10.0),
-    child: Row(
-        children:[
-          Image.asset(img,width:width*0.05),
-          SizedBox(width:width*0.01),
-          Text(name,style:(TextStyle(fontSize:20,color:Colors.grey.shade700)))
-        ]
-    ),
+    child: Row(children: [
+      Image.asset(img, width: width * 0.05),
+      SizedBox(width: width * 0.01),
+      Text(name, style: (TextStyle(fontSize: 20, color: Colors.grey.shade700)))
+    ]),
   );
 }
-Container customDivider2(double height,double width){
-  return  Container(
-      height: height * 0.00125,
-      width: width,
-      color: Colors.grey);
+
+Container customDivider2(double height, double width) {
+  return Container(height: height * 0.00125, width: width, color: Colors.grey);
+}
+
+class CartProduct extends StatefulWidget {
+  final String title, image, dp, op;
+  final TextEditingController txt;
+
+  const CartProduct(
+      {Key key, this.title, this.image, this.dp, this.op, this.txt})
+      : super(key: key);
+  @override
+  _CartProductState createState() => _CartProductState();
+}
+
+class _CartProductState extends State<CartProduct> {
+  double height, width;
+  String dropDownData = variation[1];
+  @override
+  Widget build(BuildContext context) {
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: height * 0.015),
+      child: Material(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(width * 0.05)),
+        elevation: 2,
+        child: Container(
+          height: height * 0.15,
+          width: width * 0.9,
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Container(
+              width: width * 0.36,
+              height: height * 0.15,
+              padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.05, vertical: height * 0.015),
+              child: Column(
+                children: [
+                  Image.asset(
+                    widget.image,
+                    height: height * 0.07,
+                    width: width * 0.25,
+                  ),
+                  Container(
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (int.parse(widget.txt.text) > 0)
+                              widget.txt.text =
+                                  (int.parse(widget.txt.text) - 1).toString();
+                          },
+                          child: Image.asset(
+                              'assets/images/akar-icons_circle-minus-fill.png',
+                              width: width * 0.05),
+                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(width * 0.01),
+                                border: Border.all(width: 0.5)),
+                            width: width * 0.075,
+                            height: width * 0.075,
+                            alignment: Alignment.centerRight,
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              showCursor: false,
+                              onEditingComplete: () {
+                                if (widget.txt.text.length == 0) {
+                                  widget.txt.text = "0";
+                                  setState(() {});
+                                }
+                                FocusScope.of(context).unfocus();
+                              },
+                              onTap: () {
+                                if (widget.txt.text == '0') {
+                                  widget.txt.text = "";
+                                  setState(() {});
+                                }
+                              },
+                              controller: widget.txt,
+                              cursorWidth: 0,
+                              enableInteractiveSelection: false,
+                              keyboardType: TextInputType.number,
+                              maxLength: 2,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                counterText: '',
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 0),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 0),
+                                ),
+                              ),
+                            )),
+                        GestureDetector(
+                          onTap: () {
+                            widget.txt.text =
+                                (int.parse(widget.txt.text) + 1).toString();
+                          },
+                          child: Image.asset('assets/images/Group 6814.png',
+                              width: width * 0.05),
+                        )
+                      ]))
+                ],
+              ),
+            ),
+            Container(
+              width: width * 0.54,
+              height: height * 0.15,
+              padding: EdgeInsets.all(width * 0.03),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AutoSizeText(widget.title,
+                        maxLines: 1, style: TextStyle(fontSize: width * 0.06)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: height * 0.005),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.005),
+                              width: width * 0.15,
+                              child: AutoSizeText('\u20B9' + widget.dp,
+                                  style: TextStyle(fontSize: width * 0.05)),
+                            ),
+                            Container(
+                              width: width * 0.15,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.005),
+                              child: AutoSizeText('\u20B9' + widget.op,
+                                  style: TextStyle(
+                                      fontSize: width * 0.045,
+                                      color: Colors.grey.shade600,
+                                      decoration: TextDecoration.lineThrough)),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: width * 0.1),
+                              child: Image.asset('assets/images/bin 1.png',
+                                  width: width * 0.05),
+                            )
+                          ]),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: height * 0.008),
+                      child: GestureDetector(
+                        onTap: () async {
+                          dropDownData = await showDialog(
+                            context: context,
+                            builder: (BuildContext context) => DialogBox(),
+                          );
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          height: height * 0.03,
+                          width: width * 0.45,
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5)),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: width * 0.375,
+                                child: AutoSizeText(
+                                  dropDownData,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                              Image.asset('assets/images/Vecto.png',
+                                  width: width * 0.03)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
 }

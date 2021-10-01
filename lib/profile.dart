@@ -17,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.225),
+        preferredSize: Size.fromHeight(height * 0.25),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -25,8 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(),
             ClipRRect(
                 borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(width * 0.15),
-                    bottomLeft: Radius.circular(width * 0.15)),
+                    bottomRight: Radius.circular(width * 0.125),
+                    bottomLeft: Radius.circular(width * 0.125)),
                 child: Container(color: Colors.green, height: height * 0.25)),
             Positioned(
               top: height * 0.05,
@@ -39,8 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   maxLines: 1,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w500),
+                      fontSize: width*0.065,
+                      fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -54,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   maxLines: 1,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: width*0.05,
                   ),
                 ),
               ),
@@ -70,16 +70,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Row(
                   children: [
                     Icon(Icons.location_on_outlined,
-                        size: width * 0.1, color: Colors.white),
+                        size: width * 0.075, color: Colors.white),
                     AutoSizeText(
                       'Surat -395007',
                       maxLines: 1,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 25,
+                        fontSize: width*0.05,
                       ),
                     ),
-                    SizedBox(width: width * 0.2),
+                    SizedBox(width: width * 0.4),
                     Image.asset(
                       'assets/images/white pen.png',
                       width: width * 0.05,
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Positioned(
-              top: height * 0.2,
+              top: height * 0.185,
               right: width * 0.05,
               left: width * 0.05,
               child: Container(
