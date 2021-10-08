@@ -53,7 +53,6 @@ class _SearchScreenState extends State<SearchScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
           automaticallyImplyLeading: false,

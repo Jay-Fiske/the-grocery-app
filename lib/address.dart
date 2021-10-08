@@ -9,7 +9,12 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
-  reset() {
+  @override
+  void initState() {
+    super.initState();
+    reset();
+  }
+  reset2() {
     for (int i = 0; i < 3; i++) {
       _click[i] = false;
     }
@@ -164,7 +169,7 @@ class _AddressScreenState extends State<AddressScreen> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 GestureDetector(
                   onTap: () {
-                    reset();
+                    reset2();
                     _click[0] = true;
                     setState(() {});
                   },
@@ -182,7 +187,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    reset();
+                    reset2();
                     _click[1] = true;
                     setState(() {});
                   },
@@ -200,7 +205,7 @@ class _AddressScreenState extends State<AddressScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    reset();
+                    reset2();
                     _click[2] = true;
                     setState(() {});
                   },

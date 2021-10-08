@@ -4,27 +4,26 @@ import 'components.dart';
 
 
 
-class CartScreen extends StatefulWidget {
+class ReviewScreen2 extends StatefulWidget {
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _ReviewScreen2State createState() => _ReviewScreen2State();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _ReviewScreen2State extends State<ReviewScreen2> {
   double height, width;
-  bool asap = true;
-  String dropDownData=variation[1];
-  TextEditingController textEditingController1 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController2 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController3 =
-  new TextEditingController(text: '1');
+  @override
+  void initState() {
+    super.initState();
+    reset();
+  }
+  bool reviewed = true;
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.125),
         child: AppBar(
@@ -39,12 +38,12 @@ class _CartScreenState extends State<CartScreen> {
                 child: Container(color: Colors.green, height: height * 0.15)),
             Positioned(
               top: height * 0.05,
-              left: width * 0.3,
-              right: width * 0.3,
+              left: width * 0.15,
+              right: width * 0.15,
               child: Container(
                 alignment: Alignment.center,
                 child: AutoSizeText(
-                  'Cart',
+                  'My Ratings and Reviews',
                   maxLines: 1,
                   style: TextStyle(
                       color: Colors.white,
@@ -73,8 +72,8 @@ class _CartScreenState extends State<CartScreen> {
                           curve: Curves.ease,
                           top: height * 0.005,
                           bottom: height * 0.005,
-                          left: asap ? width * 0.01 : width * 0.35,
-                          right: asap ? width * 0.35 : width * 0.01,
+                          left: !reviewed ? width * 0.01 : width * 0.35,
+                          right: !reviewed ? width * 0.35 : width * 0.01,
                           duration: Duration(milliseconds: 400),
                           child: Container(
                               height: height * 0.075,
@@ -94,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      asap = true;
+                                      reviewed = false;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -102,16 +101,17 @@ class _CartScreenState extends State<CartScreen> {
                                       height: height * 0.05,
                                       color: Colors.transparent,
                                       alignment: Alignment.center,
-                                      child: Text('ASAP',
+                                      child: AutoSizeText('To be reviewed',
+                                          maxLines: 1,
                                           style: TextStyle(
-                                              color: asap
+                                              color: !reviewed
                                                   ? Colors.white
                                                   : Colors.grey.shade600,
                                               fontSize: 18)),
                                     )),
                                 GestureDetector(
                                     onTap: () {
-                                      asap = false;
+                                      reviewed = true;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -119,9 +119,9 @@ class _CartScreenState extends State<CartScreen> {
                                       height: height * 0.05,
                                       alignment: Alignment.center,
                                       width: width * 0.3,
-                                      child: Text('Schedule',
+                                      child: Text('Reviewed',
                                           style: TextStyle(
-                                              color: asap
+                                              color: !reviewed
                                                   ? Colors.grey.shade600
                                                   : Colors.white,
                                               fontSize: 18)),
@@ -137,31 +137,42 @@ class _CartScreenState extends State<CartScreen> {
           ]),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(),
-            CartProduct(title: "Fresh Banana",image: "assets/images/mkl.png",dp: "25",op:"35",txt: textEditingController1,),
-            CartProduct(title: "Fresh Apple",image: "assets/images/Group 6888.png",dp: "135",op:"190",txt: textEditingController2,),
-            CartProduct(title: "Fresh Green Apple",image: "assets/images/Group 6890.png",dp: "140",op:"155",txt: textEditingController3,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children:[Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
-                    Text('Delivery: \u20B950',style: TextStyle(fontSize: 18),),
-                    Text('Total: \u20B9345',style: TextStyle(fontSize: 20,color:Colors.blue),),
-                    Text('Save: \u20B927',style: TextStyle(fontSize: 18),),
-                  ]
+      body: Center(
+        child: Container(
+          child: Column(children: [
+            SizedBox(
+              height: height * 0.1,
+            ),
+            Image.asset('assets/images/image 35.png', width: width * 0.5),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: height * 0.02,horizontal:width*0.125),
 
+              child: AutoSizeText(
+                'Oh! Looks like you have not yet shopped any product',textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: width * 0.04,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w600),
               ),
-                SizedBox(width:width*0.1)
-              ],
-
-            )
-          ],
+            ),
+            Container(
+              margin: EdgeInsets.only(top:height*0.025),
+              child: MaterialButton(
+                padding: EdgeInsets.symmetric(vertical:height*0.015,horizontal:width*0.075 ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(width * 0.025)),
+                onPressed: () {},
+                child: Text('Shop Now',
+                    style:
+                    TextStyle(color: Colors.white, fontSize: width * 0.05)),
+                color: Colors.green,
+              ),)
+          ]),
         ),
       ),
+      bottomNavigationBar: Bottom(),
+      floatingActionButton: fAB(width),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

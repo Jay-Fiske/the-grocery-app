@@ -1,11 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
 import 'address.dart';
 import 'components.dart';
-
 
 List<String> time = [
   '9:30 am to 11:00 am',
@@ -15,8 +13,6 @@ List<String> time = [
 ];
 enum Timings { morning, noon, afternoon, evening }
 Timings _time = Timings.morning;
-
-
 
 class CheckOut extends StatefulWidget {
   @override
@@ -33,22 +29,26 @@ class _CheckOutState extends State<CheckOut> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        width:width*0.75,
-        height:height*0.05,
+        width: width * 0.75,
+        height: height * 0.05,
         child: MaterialButton(
-          child: AutoSizeText('Checkout', style: TextStyle(fontSize:20,color: Colors.white)),
+          child: AutoSizeText('Checkout',
+              style: TextStyle(fontSize: 20, color: Colors.white)),
           color: Colors.green,
           onPressed: () {
-            Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-                return CheckOut();
-              },),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return CheckOut();
+                },
+              ),
+            );
           },
         ),
-      ) ,
-      backgroundColor:Colors.white,
+      ),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(height * 0.125),
+        preferredSize: Size.fromHeight(height * 0.15),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -103,7 +103,7 @@ class _CheckOutState extends State<CheckOut> {
                               width: width * 0.375,
                               decoration: BoxDecoration(
                                   borderRadius:
-                                  BorderRadius.circular(width * 0.05),
+                                      BorderRadius.circular(width * 0.05),
                                   color: Colors.grey.shade600))),
                       Positioned(
                         top: height * 0.0125,
@@ -256,10 +256,13 @@ class _CheckOutState extends State<CheckOut> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    Image.asset('assets/images/loading.png',width: width*0.1,),
+                    Image.asset(
+                      'assets/images/loading.png',
+                      width: width * 0.1,
+                    ),
                     Text('Delivery Time:',
-                        style:
-                        TextStyle(fontSize: 20, color: Colors.grey.shade600))
+                        style: TextStyle(
+                            fontSize: 20, color: Colors.grey.shade600))
                   ]),
                   MaterialButton(
                     height: width * 0.075,
@@ -274,23 +277,27 @@ class _CheckOutState extends State<CheckOut> {
                         borderRadius: BorderRadius.circular(width * 0.01),
                         side: BorderSide(color: Colors.grey.shade600)),
                     child: Text('Manage',
-                        style:
-                        TextStyle(color: Colors.grey.shade600, fontSize: 12)),
+                        style: TextStyle(
+                            color: Colors.grey.shade600, fontSize: 12)),
                   )
                 ],
               ),
             ),
           ),
           Row(children: [
-            SizedBox(width:width*0.035),
-            Icon(MaterialCommunityIcons.ticket_percent,color: Colors.grey,size: 30,),
+            SizedBox(width: width * 0.035),
+            Icon(
+              MaterialCommunityIcons.ticket_percent,
+              color: Colors.grey,
+              size: 30,
+            ),
             Text(
               '  Have a coupon code ?',
               style: TextStyle(fontSize: 20, color: Colors.grey.shade600),
             )
           ]),
           Row(children: [
-            SizedBox(width:width*0.035),
+            SizedBox(width: width * 0.035),
             TextButton(
               onPressed: () {},
               child: Text(
@@ -301,122 +308,162 @@ class _CheckOutState extends State<CheckOut> {
           ]),
           customDivider(),
           Padding(
-            padding: EdgeInsets.symmetric(vertical:height*0.01),
+            padding: EdgeInsets.symmetric(vertical: height * 0.01),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
                   width: width * 0.4,
-                  child: AutoSizeText('Default Delivery Option:',
+                  child: AutoSizeText(
+                    'Default Delivery Option:',
                     maxLines: 2,
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.grey.shade600,
-                        fontWeight: FontWeight.bold),),
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Container(
-                  width:width*0.4,
-                  child:  AutoSizeText('1 Shipment\nDelivery Charges: Rs.50',
+                  width: width * 0.4,
+                  child: AutoSizeText(
+                    '1 Shipment\nDelivery Charges: Rs.50',
                     maxLines: 2,
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.grey,
-                        fontWeight: FontWeight.bold),),
+                        fontWeight: FontWeight.bold),
+                  ),
                 )
               ],
             ),
           ),
           customDivider(),
           Container(
-            padding:EdgeInsets.symmetric(horizontal: width*0.1,vertical: height*0.01),
-            child:Column(
-                mainAxisSize:MainAxisSize.min,
-                children:[
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(
-                      children: [
-                        Text('Bill Details', style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.grey.shade700,
-                            fontWeight: FontWeight.bold),),
-                      ],
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.1, vertical: height * 0.01),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                  children: [
+                    Text(
+                      'Bill Details',
+                      style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.grey.shade700,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Cart Value', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),),
-                          Text('\u{20B9}322', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),)
-                        ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Delivery Charges', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),),
-                          Text('\u{20B9}50', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),)
-                        ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Saving', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold),),
-                          Text('-\u{20B9}27', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold),)
-                        ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Order Total', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),),
-                          Text('\u{20B9}295', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),)
-                        ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(3),
-                    child: Row(mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Amount to be Paid', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),),
-                          Text('\u{20B9}295', style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),)
-                        ]),
-                  )
-                ]
-            ),),
-
-
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Cart Value',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\u{20B9}322',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Delivery Charges',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\u{20B9}50',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Saving',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '-\u{20B9}27',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Order Total',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\u{20B9}295',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(3),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Amount to be Paid',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '\u{20B9}295',
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ]),
+              )
+            ]),
+          ),
+          SizedBox(height:height*0.1)
         ]),
       ),
     );
@@ -584,7 +631,7 @@ class _MessageState extends State<Message> {
           FlatButton(
             color: Colors.green,
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             onPressed: () {
               Navigator.of(context).pop();
             },

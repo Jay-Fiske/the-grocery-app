@@ -11,6 +11,13 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   double height, width;
+
+  @override
+  void initState() {
+    super.initState();
+    reset();
+    icons[3]=true;
+  }
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -171,9 +178,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: EdgeInsets.all(10.0),
                       child: Row(
                           children:[
-                            Icon(Icons.watch_later),
+                            Icon(Icons.watch_later,size:width*0.04),
                             SizedBox(width:width*0.01),
-                            Text('My Orders',style:(TextStyle(fontSize:20,color:Colors.grey.shade700)))
+                            Text('My Orders',style:(TextStyle(fontSize:width*0.035,color:Colors.grey.shade700)))
                           ]
                       ),
                     ),

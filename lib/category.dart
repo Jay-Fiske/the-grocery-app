@@ -29,7 +29,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         automaticallyImplyLeading: false,

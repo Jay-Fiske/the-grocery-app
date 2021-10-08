@@ -2,29 +2,26 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'components.dart';
 
-
-
-class CartScreen extends StatefulWidget {
+class CartScreen2 extends StatefulWidget {
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _CartScreen2State createState() => _CartScreen2State();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreen2State extends State<CartScreen2> {
   double height, width;
   bool asap = true;
-  String dropDownData=variation[1];
-  TextEditingController textEditingController1 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController2 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController3 =
-  new TextEditingController(text: '1');
+  @override
+  void initState() {
+    super.initState();
+    reset();
+  }
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.125),
         child: AppBar(
@@ -137,31 +134,48 @@ class _CartScreenState extends State<CartScreen> {
           ]),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(),
-            CartProduct(title: "Fresh Banana",image: "assets/images/mkl.png",dp: "25",op:"35",txt: textEditingController1,),
-            CartProduct(title: "Fresh Apple",image: "assets/images/Group 6888.png",dp: "135",op:"190",txt: textEditingController2,),
-            CartProduct(title: "Fresh Green Apple",image: "assets/images/Group 6890.png",dp: "140",op:"155",txt: textEditingController3,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children:[Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
-                    Text('Delivery: \u20B950',style: TextStyle(fontSize: 18),),
-                    Text('Total: \u20B9345',style: TextStyle(fontSize: 20,color:Colors.blue),),
-                    Text('Save: \u20B927',style: TextStyle(fontSize: 18),),
-                  ]
-
+      body: Center(
+        child: Container(
+          child: Column(children: [
+            SizedBox(
+              height: height * 0.1,
+            ),
+            Image.asset('assets/images/image 35.png', width: width * 0.5),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: height * 0.02),
+              child: Text(
+                'Your Bag is Empty',
+                style: TextStyle(
+                    fontSize: width * 0.075,
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w700),
               ),
-                SizedBox(width:width*0.1)
-              ],
-
-            )
-          ],
+            ),
+            AutoSizeText(
+              'Start Shopping. We Have What You Need!',
+              style: TextStyle(
+                  fontSize: width * 0.04,
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w600),
+            ),
+            Container(
+              margin: EdgeInsets.only(top:height*0.025),
+              child: MaterialButton(
+                padding: EdgeInsets.symmetric(vertical:height*0.015,horizontal:width*0.075 ),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(width * 0.025)),
+                onPressed: () {},
+                child: Text('Shop Now',
+                    style:
+                    TextStyle(color: Colors.white, fontSize: width * 0.05)),
+                color: Colors.green,
+              ),)
+          ]),
         ),
       ),
+      bottomNavigationBar: Bottom(),
+      floatingActionButton: fAB(width),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

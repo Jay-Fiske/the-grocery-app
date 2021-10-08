@@ -3,28 +3,33 @@ import 'package:flutter/material.dart';
 import 'components.dart';
 
 
-
-class CartScreen extends StatefulWidget {
+class ReviewScreen extends StatefulWidget {
   @override
-  _CartScreenState createState() => _CartScreenState();
+  _ReviewScreenState createState() => _ReviewScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _ReviewScreenState extends State<ReviewScreen> {
   double height, width;
-  bool asap = true;
-  String dropDownData=variation[1];
-  TextEditingController textEditingController1 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController2 =
-  new TextEditingController(text: '1');
-  TextEditingController textEditingController3 =
-  new TextEditingController(text: '1');
+  bool reviewed = true;
+  List<bool> star = [true, true, true, false, false];
+  rating(int i) {
+    for (int j = 0; j <= i; j++) {
+      star[j] = true;
+    }
+    for (int k = i + 1; k <= 4; k++) {
+      star[k] = false;
+    }
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(height * 0.125),
         child: AppBar(
@@ -39,12 +44,12 @@ class _CartScreenState extends State<CartScreen> {
                 child: Container(color: Colors.green, height: height * 0.15)),
             Positioned(
               top: height * 0.05,
-              left: width * 0.3,
-              right: width * 0.3,
+              left: width * 0.15,
+              right: width * 0.15,
               child: Container(
                 alignment: Alignment.center,
                 child: AutoSizeText(
-                  'Cart',
+                  'My Ratings and Reviews',
                   maxLines: 1,
                   style: TextStyle(
                       color: Colors.white,
@@ -73,8 +78,8 @@ class _CartScreenState extends State<CartScreen> {
                           curve: Curves.ease,
                           top: height * 0.005,
                           bottom: height * 0.005,
-                          left: asap ? width * 0.01 : width * 0.35,
-                          right: asap ? width * 0.35 : width * 0.01,
+                          left: !reviewed ? width * 0.01 : width * 0.35,
+                          right: !reviewed ? width * 0.35 : width * 0.01,
                           duration: Duration(milliseconds: 400),
                           child: Container(
                               height: height * 0.075,
@@ -94,7 +99,7 @@ class _CartScreenState extends State<CartScreen> {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      asap = true;
+                                      reviewed = false;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -102,16 +107,17 @@ class _CartScreenState extends State<CartScreen> {
                                       height: height * 0.05,
                                       color: Colors.transparent,
                                       alignment: Alignment.center,
-                                      child: Text('ASAP',
+                                      child: AutoSizeText('To be reviewed',
+                                          maxLines: 1,
                                           style: TextStyle(
-                                              color: asap
+                                              color: !reviewed
                                                   ? Colors.white
                                                   : Colors.grey.shade600,
                                               fontSize: 18)),
                                     )),
                                 GestureDetector(
                                     onTap: () {
-                                      asap = false;
+                                      reviewed = true;
                                       setState(() {});
                                     },
                                     child: Container(
@@ -119,9 +125,9 @@ class _CartScreenState extends State<CartScreen> {
                                       height: height * 0.05,
                                       alignment: Alignment.center,
                                       width: width * 0.3,
-                                      child: Text('Schedule',
+                                      child: Text('Reviewed',
                                           style: TextStyle(
-                                              color: asap
+                                              color: !reviewed
                                                   ? Colors.grey.shade600
                                                   : Colors.white,
                                               fontSize: 18)),
@@ -138,28 +144,14 @@ class _CartScreenState extends State<CartScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(),
-            CartProduct(title: "Fresh Banana",image: "assets/images/mkl.png",dp: "25",op:"35",txt: textEditingController1,),
-            CartProduct(title: "Fresh Apple",image: "assets/images/Group 6888.png",dp: "135",op:"190",txt: textEditingController2,),
-            CartProduct(title: "Fresh Green Apple",image: "assets/images/Group 6890.png",dp: "140",op:"155",txt: textEditingController3,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children:[Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[
-                    Text('Delivery: \u20B950',style: TextStyle(fontSize: 18),),
-                    Text('Total: \u20B9345',style: TextStyle(fontSize: 20,color:Colors.blue),),
-                    Text('Save: \u20B927',style: TextStyle(fontSize: 18),),
-                  ]
-
-              ),
-                SizedBox(width:width*0.1)
-              ],
-
-            )
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(children: [
+            Visibility(visible: !reviewed,child: MyReview(title: 'Kashmiri Apple',days: '1',img: 'assets/images/image 18.png',price: '240.00',)),
+            Visibility(visible: !reviewed,child: MyReview(title: 'Fresh Banana',days: '3',img: 'assets/images/mkl.png',price: '193.00',)),
+            Visibility(visible: reviewed,child: MyReview2(title: 'Kashmiri Apple',days: '1',img: 'assets/images/image 18.png',price: '240.00',rating:'2',description: 'Fresh',weight: '500gm',)),
+            Visibility(visible: reviewed,child: MyReview2(title: 'Fresh Banana',days: '2',img: 'assets/images/mkl.png',price: '193.00',rating:'3',description: 'Such a good product',weight: '500gm',))
+          ]),
         ),
       ),
     );
