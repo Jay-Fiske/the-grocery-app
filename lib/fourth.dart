@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
                                   } else if (value.length != 10) {
                                     return 'Please enter a valid Phone Number';
                                   }
-                                  const pattern = r'[7-9][0-9]{9}';
+                                  const pattern = r'[1-9][0-9]{9}';
                                   final regExp = RegExp(pattern);
 
                                   if (!regExp.hasMatch(value)) {

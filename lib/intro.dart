@@ -14,7 +14,6 @@ class _IntroScreen1State extends State<IntroScreen1> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -70,7 +69,6 @@ class _IntroScreen2State extends State<IntroScreen2> {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: Colors.white,
         body: Stack(children: [
           Padding(
             padding: EdgeInsets.all(10),

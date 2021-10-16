@@ -3,9 +3,17 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_app/profile.dart';
+import 'package:grocery_app/searchScreen.dart';
 import 'package:grocery_app/vegetables.dart';
+import 'package:grocery_app/wallet.dart';
+import 'package:grocery_app/wishlist.dart';
+import 'address.dart';
+import 'cart.dart';
 import 'components.dart';
+import 'customerService.dart';
 import 'fruits.dart';
+import 'myorders.dart';
 
 final List<String> imgList = [
   'assets/images/carousel1.png',
@@ -16,9 +24,7 @@ final List<String> imgList = [
 final List<String> imgList2 = [
   'assets/images/asap1.png',
   'assets/images/asap2.png',
-
 ];
-
 
 class DashBoard extends StatefulWidget {
   @override
@@ -30,6 +36,13 @@ class _DashBoardState extends State<DashBoard> {
   int _current = 0;
   List<bool> icons = [true, false, false, false];
   final CarouselController _controller = CarouselController();
+  FocusNode currentFocus;
+
+  @override
+  void dispose() {
+    if (currentFocus != null) currentFocus.unfocus();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,55 +60,108 @@ class _DashBoardState extends State<DashBoard> {
             ))
         .toList();
 
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
         extendBody: true,
-        appBar: AppBar(
-          elevation: 0.0,
-          automaticallyImplyLeading: false,
-          toolbarHeight: height * 0.13,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: width,
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(Icons.menu,
-                                size: width * 0.085, color: Colors.white),
-                            Container(
-                              width: width * 0.65,
-                              child: Row(
-                                children: [
-                                  Icon(FontAwesome.truck,
-                                      size: 18, color: Colors.white),
-                                  AutoSizeText(
-                                      '  405, Silver Plaza, Citylight, Surat  ',
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.white)),
-                                  Image.asset('assets/images/white pen.png',width: width*0.05,height:width*0.05),
-                                ],
-                              ),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(height * 0.125),
+          child: AppBar(
+            elevation: 0.0,
+            automaticallyImplyLeading: false,
+            flexibleSpace: Padding(
+              padding: EdgeInsets.all(8.0),
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: height * 0.005),
+                  width: width,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Builder(
+                            builder: (context) => GestureDetector(
+                              child: Icon(Icons.menu,
+                                  color: Colors.white, size: width * 0.085),
+                              onTap: () => Scaffold.of(context).openDrawer(),
                             ),
-                            Row(
-                              children: [
-                                Image.asset('assets/images/white ball.png',width: width*0.06,height:width*0.06),
-                                Image.asset('assets/images/Group 6885 (2).png',width: width*0.09,height:width*0.09),
-                              ],
-                            ),
-                          ]),
-                    ),
-                    Container(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          ),
+                        ),
+                        Container(
+                          width: width * 0.65,
+                          child: Row(
                             children: [
+                              Icon(FontAwesome.truck,
+                                  size: 18, color: Colors.white),
+                              AutoSizeText(
+                                  ' 405, Silver Plaza, Citylight, Surat ',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white)),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AddressScreen()));
+                                },
+                                child: Image.asset(
+                                    'assets/images/white pen.png',
+                                    width: width * 0.05,
+                                    height: width * 0.05),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Image.asset('assets/images/white ball.png',
+                                width: width * 0.06, height: width * 0.06),
+                            GestureDetector(
+                                onTap: () {
+                                  reset();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CartScreen(),
+                                      ));
+                                },
+                                child: Image.asset(
+                                    'assets/images/Group 6885 (2).png',
+                                    width: width * 0.09,
+                                    height: width * 0.09)),
+                          ],
+                        ),
+                      ]),
+                ),
+                Container(
+                    padding: EdgeInsets.symmetric(vertical: height * 0.005),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
                           Container(
                             width: width * 0.85,
                             height: height * 0.05,
                             child: TextFormField(
+                              keyboardType: TextInputType.none,
+                              onTap: () {
+                                currentFocus = FocusScope.of(context);
+
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SearchScreen()),
+                                );
+                              },
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: height * 0.01),
@@ -125,7 +191,7 @@ class _DashBoardState extends State<DashBoard> {
                                 color: Colors.green,
                               ))
                         ]))
-                  ]),
+              ]),
             ),
           ),
         ),
@@ -179,12 +245,14 @@ class _DashBoardState extends State<DashBoard> {
                 ),
               ]),
               CarouselSlider(
-                options: CarouselOptions(viewportFraction: 1.0,height:height*0.116,),
+                options: CarouselOptions(
+                  viewportFraction: 1.0,
+                  height: height * 0.116,
+                ),
                 items: imgList2
-                    .map((item) => Image.asset(item, width:width))
+                    .map((item) => Image.asset(item, width: width))
                     .toList(),
               ),
-
               Padding(
                 padding: EdgeInsets.fromLTRB(
                     width * 0.1, width * 0.1, width * 0.1, width * 0.05),
@@ -200,6 +268,7 @@ class _DashBoardState extends State<DashBoard> {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   GestureDetector(
                     onTap: () {
+                      reset();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -212,14 +281,15 @@ class _DashBoardState extends State<DashBoard> {
                       width: width * 0.45,
                     ),
                   ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => (Fruits()),
-                              ));
-                        },
+                  GestureDetector(
+                    onTap: () {
+                      reset();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => (Fruits()),
+                          ));
+                    },
                     child: Image.asset(
                       'assets/images/Group 6841.png',
                       height: width * 0.45,
@@ -232,14 +302,15 @@ class _DashBoardState extends State<DashBoard> {
                 padding: EdgeInsets.all(8),
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => (Vegetables()),
-                              ));
-                        },
+                  GestureDetector(
+                    onTap: () {
+                      reset();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => (Vegetables()),
+                          ));
+                    },
                     child: Image.asset(
                       'assets/images/Group 6843.png',
                       height: width * 0.45,
@@ -248,6 +319,7 @@ class _DashBoardState extends State<DashBoard> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      reset();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -282,9 +354,18 @@ class _DashBoardState extends State<DashBoard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SaleProduct(img: 'assets/images/Group 6890.png', op: '290', dp: '250', name: 'Green Apple',),
-                          SaleProduct(img: 'assets/images/group123.png', op: '250', dp: '120', name: 'Lady Finger',),
-
+                          SaleProduct(
+                            img: 'assets/images/Group 6890.png',
+                            op: '290',
+                            dp: '250',
+                            name: 'Green Apple',
+                          ),
+                          SaleProduct(
+                            img: 'assets/images/group123.png',
+                            op: '250',
+                            dp: '120',
+                            name: 'Lady Finger',
+                          ),
                         ],
                       ),
                     ),
@@ -298,27 +379,162 @@ class _DashBoardState extends State<DashBoard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          SaleProduct(img: 'assets/images/Group 6890.png', op: '290', dp: '250', name: 'Green Apple',),
-                          SaleProduct(img: 'assets/images/group123.png', op: '250', dp: '120', name: 'Lady Finger',),
-
+                          SaleProduct(
+                            img: 'assets/images/Group 6890.png',
+                            op: '290',
+                            dp: '250',
+                            name: 'Green Apple',
+                          ),
+                          SaleProduct(
+                            img: 'assets/images/group123.png',
+                            op: '250',
+                            dp: '120',
+                            name: 'Lady Finger',
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ]),
               ),
-              SizedBox(height: 50,),
-
+              SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.mic, size: width * 0.1),
-          shape:
-              CircleBorder(side: BorderSide(color: Colors.white, width: 3.0)),
-        ),
+        floatingActionButton: fAB(width),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: Bottom());
+        bottomNavigationBar: Bottom(),
+        drawer: Drawer(
+          child: Container(
+            color: Colors.white,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                Container(
+                  height: height * 0.3,
+                  child: DrawerHeader(
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Column(children: [
+                      Container(
+                          height: height * 0.11,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.025,
+                              vertical: height * 0.01),
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      'https://wallpaperaccess.com/full/2213424.jpg'),
+                                  radius: width * 0.075,
+                                ),
+                              ])),
+                      Container(
+                        height: height * 0.1,
+                        width: width,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: width * 0.0275),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AutoSizeText('Aviral Chaudhary',
+                                  maxLines: 1, style: TextStyle(fontSize: 24)),
+                              Container(
+                                margin: EdgeInsets.only(top: height * 0.005),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AutoSizeText(
+                                        '405, Silver Plaza, Citylight, Surat ',
+                                        style:
+                                            TextStyle(fontSize: width * 0.03)),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddressScreen()));
+                                      },
+                                      child: Icon(Icons.edit,
+                                          color: Colors.green,
+                                          size: width * 0.05),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: height * 0.005),
+                                padding: EdgeInsets.only(right: width * 0.015),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    AutoSizeText(
+                                        'Earliest Delivery in 10 hrs.* ',
+                                        style:
+                                            TextStyle(fontSize: width * 0.03)),
+                                    Image.asset('assets/images/Vecto.png',
+                                        color: Colors.green,
+                                        width: width * 0.03)
+                                  ],
+                                ),
+                              ),
+                            ]),
+                      )
+                    ]),
+                  ),
+                ),
+                Container(
+                  color: Colors.green,
+                  height: 2,
+                ),
+                DrawerElement(
+                    title: 'My Account',
+                    mpr: MaterialPageRoute(
+                        builder: (context) => ProfileScreen())),
+                DrawerElement(
+                    title: 'WishList',
+                    mpr: MaterialPageRoute(builder: (context) => WishScreen())),
+                DrawerElement(
+                    title: 'My Cart',
+                    mpr: MaterialPageRoute(builder: (context) => CartScreen())),
+                DrawerElement(
+                    title: 'My Wallet',
+                    mpr: MaterialPageRoute(
+                        builder: (context) => WalletScreen())),
+                DrawerElement(
+                    title: 'My Order',
+                    mpr:
+                        MaterialPageRoute(builder: (context) => OrderScreen())),
+                Row(
+                  children: [
+                    DrawerElement(
+                      title: 'Refer and Earn',
+                    ),
+                    SizedBox(width: width * 0.05),
+                    Image.asset('assets/images/image 7.png',
+                        width: width * 0.05)
+                  ],
+                ),
+                DrawerElement(
+                    title: 'Customer Service',
+                    mpr: MaterialPageRoute(builder: (context) => CustomerScreen())),
+                DrawerElement(title: 'FAQ'),
+                DrawerElement(title: 'Farm Cookbook'),
+                DrawerElement(title: 'Community'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
